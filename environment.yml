@@ -1,0 +1,9 @@
+name: cvenv
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.9
+  - numpy=1.22.*
+  - opencv
+  - notebook
