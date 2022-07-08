@@ -14,16 +14,16 @@ const cv::String ROOT = "/home/satwik/dev/machine-learning/computer-vision/basic
 const cv::String OUT = ROOT + "output/";
 
 int main(int argc, char** argv) {    
-    // PREPARE IMG-DATA
+    //* PREPARE IMG-DATA
     cv::String path = ROOT + "images/sample1.jpg";
 
-    // PREPARE OUTPUT FILE
+    //* PREPARE OUTPUT FILE
     std::string outpath = (std::string)OUT + "output.txt";
     FILE* outfile = fopen(const_cast<char*>(outpath.c_str()), "a");
-    // std::string sep = getSeparator(69);
-    // fprintf(outfile, "%s", sep.c_str());
+    std::string sep = getSeparator(69);
+    fprintf(outfile, "%s", sep.c_str());
     
-    // LOAD IMG
+    //* LOAD IMG
     cv::Mat_<cv::Vec3b> img = cv::imread(path);
     if (img.empty()) {
         std::cout << "Could not open or find the image" << std::endl;
@@ -31,8 +31,7 @@ int main(int argc, char** argv) {
         return -1;
     }
     
-    fprintf(outfile, "  ->  IMG-DIM: {%d, %d}\n", img.rows, img.cols);
-    // cv::Mat bord = shiftDiff(img, 2, 0);
+    // fprintf(outfile, "  ->  IMG-DIM: {%d, %d}\n", img.rows, img.cols);
 
     //* QUANTIZE
     clock_t start = clock();
@@ -54,20 +53,44 @@ int main(int argc, char** argv) {
     cv::Mat_<cv::Vec3b> skImg = sketchFilter(img);
 
     //* TRANSFORMS
-    // cv::Mat m1 = cv::Mat::eye(3, 3, CV_8UC1);
-    // m1.at<uchar>(0, 2) = 1;
-    // m1.at<uchar>(1, 2) = 0;
-    // print2DMat(m1, outfile, "\t");
-    // cv::Mat m2({4, 5, 1});
-    // cv::Mat r = imgDot(m1, m2);
-    // int ni = r.at<uchar>(0);
-    // int nj = r.at<uchar>(1);
-    // std:: cout << "\n\n" << ni << "   " << nj << "\n\n";
-    cv::Mat T = getTransformMatrix(5, 5, 't');
-    print2DMat(T);
-    cv::Mat res = affineTransform(img, T);
+    //-- HELPERS --//
+    // cv::Mat m1 = cv::Mat::eye(3, 3, CV_32SC1);
+    // cv::Mat m2 = cv::Mat::ones(3, 1, CV_32SC1);
+    // cv::Mat r = cv::Mat::zeros(3, 1, CV_32SC1);
+    // m1.at<int>(0, 2) = 3;
+    // m1.at<int>(1, 2) = 3;
+    // m2.at<int>(0, 0) = 4;
+    // m2.at<int>(1, 0) = 5;
+    // print2DMat(m1, "\t");
 
-    // SHOW AND SAVE
+    // SOME INITIAL TESTING
+    // cv::Vec3i t11 = m1.at<cv::Vec3i>(0);
+    // cv::Mat t1 = cv::Mat(t11);
+    // r.at<int>(0, 0) = t1.dot(m2); 
+
+    // cv::Vec3i t22 = m1.at<cv::Vec3i>(1);
+    // cv::Mat t2 = cv::Mat(t22);
+    // r.at<int>(1, 0) = t2.dot(m2); 
+
+    // cv::Vec3i t33 = m1.at<cv::Vec3i>(2);
+    // cv::Mat t3 = cv::Mat(t33);
+    // r.at<int>(2, 0) = t3.dot(m2); 
+    // print2DMat(r);
+
+    //-- TRANSFORMATIONS --//
+    std::vector<double> params = {5.0, 5.0, 30.0, 1.0, 1.0, 1.0};
+    std::string op = "trs";
+    cv::Mat T = getTransformMatrix(params, op);
+    print2DMat(T, outfile, "Transformation Matrix:\n\t");
+
+    cv::Mat res = affineTransform(img, T);
+    cv::Mat res2 = rotate(img, 30, true);
+    cv::Mat sres = shear(img, 30, 1, 2);
+
+    //* OUTLINE
+    cv::Mat bord = shiftDiff(img, 2, 2);
+
+    //* SHOW AND SAVE
     cv::String windowName1 = "Normal";
     cv::String windowName2 = "Quantized";
     cv::String windowName3 = "Sketch";
@@ -79,14 +102,21 @@ int main(int argc, char** argv) {
     cv::imshow(windowName2, qimg);
     cv::imshow(windowName3, skImg);
     cv::imshow("transform", res);
+    cv::imshow("rotated", res2);
+    cv::imshow("sheared", sres);
+    cv::imshow("outline", bord);
     
     cv::waitKey(0);
     cv::destroyAllWindows();
 
     // cv::String qimg_path = OUT + "qimg-2-8.jpg";
     // cv::String skimg_path = OUT + "skImg-2-8.jpg";
+    // cv::String bpath = OUT + "bord-1.jpg";
+    // cv::String tpath = OUT + "transf-1.jpg";
     // cv::imwrite(qimg_path, qimg);
     // cv::imwrite(skimg_path, skImg);
+    // cv::imwrite(tpath, res);
+    // cv::imwrite(bpath, bord);
 
     // print2DMat(r, outfile, "\t");
     fclose(outfile);
