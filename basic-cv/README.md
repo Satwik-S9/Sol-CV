@@ -30,6 +30,6 @@ Lorem Ipsum ...
 
 1. Basic Project Structure Created.
 2. Basic Image Quantization Implemented for 8 levels of quantization
-3. Standard Image Transformations like the Affine Transformations, Shifting-Difference is implemented.
+3. Standard Image Transformations like the Affine Transformations, Shifting-Difference is implemented, Shear function implemented.
 4. Standard Image Operations like Addition, Subtraction, Dot and Multiplication implemented.
 5. Basic Utility functions for Printing the image matrix implemented.
