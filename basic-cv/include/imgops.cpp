@@ -19,19 +19,15 @@ cv::Mat subTwoImgs(cv::Mat img1, cv::Mat img2) {
     return res;
 }
 
-cv::Mat imgDot(cv::Mat m1, cv::Mat m2) {
-    cv::Mat img_copy;
-
-    if (m1.cols == m2.rows) {
-        cv::Mat res = cv::Mat::zeros(m1.rows, m2.cols, CV_8UC3);
+cv::Mat affDot(cv::Mat ma1, cv::Mat ma2) {
+    cv::Mat m1, m2;
+    ma1.convertTo(m1, CV_64F);
+    ma2.convertTo(m2, CV_64F);
+    if (m1.cols == m2.rows && m1.cols == 3 && m2.rows == 3) {
+        cv::Mat res = cv::Mat::zeros(m1.rows, m2.cols, CV_64F);
         for (int i=0; i<m1.rows; i++) {
-            for (int j=0; j<m2.cols; j++) {
-                int sum = 0;
-                for (int k=0; k<m2.rows; k++) {
-                    sum += m1.at<uchar>(i, k) * m2.at<uchar>(k, i);
-                }
-                res.at<uchar>(i, j) = sum;
-            }
+            cv::Mat temp1 = cv::Mat(m1.at<cv::Vec3d>(i));
+            res.at<double>(i, 0) = temp1.dot(m2); 
         }
         return res;
     } else {
