@@ -86,6 +86,40 @@ cv::Mat fillTransformMatrix(cv::Mat &T, double paramX, double paramY, char opera
     return T;
 }
 
+cv::Mat fillTransformMatrix2(cv::Mat &T, double paramX, double paramY, char operation) {
+    cv::Mat temp = cv::Mat::eye(3, 3, CV_64F);
+    
+    if (operation == 't') {
+        temp.at<double>(0, 2) += paramX; 
+        temp.at<double>(1, 2) += paramY;
+        T = temp * T;
+    } 
+    else if (operation == 'r') {
+        double theta;
+        if (paramY == 1.0) theta = CV_PI/180 * paramX;
+        else theta = paramX;
+        
+        // create matrix for rotation
+        temp.at<double>(0, 0) = cos(theta);
+        temp.at<double>(0, 1) = -sin(theta);
+        temp.at<double>(1, 0) = sin(theta);
+        temp.at<double>(1, 1) = cos(theta);
+        
+        // compose new transformation matrix
+        T = temp * T;
+    } 
+    else if (operation == 's') {
+        temp.at<double>(0, 0) = paramX; 
+        temp.at<double>(1, 1) = paramY;
+        T = temp * T;
+    } 
+    else {
+        throw std::invalid_argument("invalid operation");
+    }
+    return T;
+}
+
+
 cv::Mat getTransformMatrix(std::vector<double> &params, std::string opStr) {    
     if (params.size() != 2*opStr.length()) 
         throw std::invalid_argument("Missing Operation Parameters");
@@ -93,6 +127,17 @@ cv::Mat getTransformMatrix(std::vector<double> &params, std::string opStr) {
     cv::Mat T = cv::Mat::eye(3, 3, CV_64F);
     for (int i=0; i<2*opStr.length(); i+=2) {
         fillTransformMatrix(T, params[i], params[i+1], opStr[i/2]);
+    }
+    return T;
+}
+
+cv::Mat getTransformMatrix2(std::vector<double> &params, std::string opStr) {    
+    if (params.size() != 2*opStr.length()) 
+        throw std::invalid_argument("Missing Operation Parameters");
+
+    cv::Mat T = cv::Mat::eye(3, 3, CV_64F);
+    for (int i=0; i<2*opStr.length(); i+=2) {
+        fillTransformMatrix2(T, params[i], params[i+1], opStr[i/2]);
     }
     return T;
 }
@@ -204,7 +249,7 @@ cv::Mat rotate(cv::Mat img, double theta, bool deg, bool aliasing) {
 }
 
 cv::Mat rotate(cv::Mat img, double theta, bool deg) {
-    if (deg) theta = (CV_PI/180) * theta;
+    if (deg) theta = (CV_PI/180.0) * theta;
     int rows = img.rows, cols = img.cols;
 
     double sine = sin(theta), cosine = cos(theta);
@@ -242,7 +287,7 @@ cv::Mat rotate(cv::Mat img, double theta, bool deg) {
 }
 
 cv::Mat shear(cv::Mat img, double theta, bool deg, int axis) {
-    if (deg) theta = (CV_PI/180) * theta;
+    if (deg) theta = (CV_PI/180.0) * theta;
     int rows = img.rows, cols = img.cols;
 
     double sine = sin(theta), cosine = cos(theta);
@@ -310,4 +355,54 @@ cv::Mat shear(cv::Mat img, double theta, bool deg, int axis) {
         throw std::invalid_argument("axis must be '1' or '2'");
     }
     return img;
+}
+
+
+//! NOT WORKING 
+cv::Mat reflect(cv::Mat img, double theta, double x0, double y0, bool deg) {
+    if (deg) theta = (CV_PI/180.0) * theta;
+    cv::Mat res(img.rows, img.cols, CV_8UC3, cv::Scalar(255, 255, 255));
+
+    for (int i=0; i<img.rows; i++) {
+        for (int j=0; j<img.cols; j++) {
+            double delta = ((double)i - x0) * sin(theta) - 
+                            ((double)j - y0) * cos(theta);
+            double ni = i + 2 * delta * (-sin(theta));
+            double nj = j + 2 * delta * cos(theta);
+
+            if (ni >= 0 && nj >= 0 && ni < img.rows && nj < img.cols) {
+                res.at<cv::Vec3b>((int)ni, (int)nj)[0] = img.at<cv::Vec3b>(i, j)[0];
+                res.at<cv::Vec3b>((int)ni, (int)nj)[1] = img.at<cv::Vec3b>(i, j)[1];
+                res.at<cv::Vec3b>((int)ni, (int)nj)[2] = img.at<cv::Vec3b>(i, j)[2];
+            }
+        }
+    }
+    return res;
+}
+
+cv::Mat reflect(cv::Mat img, int axis) {
+    if (axis > 1 || axis < -1) throw std::invalid_argument("Invalid Value for axis");
+
+    cv::Mat res(img.rows, img.cols, CV_8UC3, cv::Scalar(255, 255, 255));
+    double theta;
+    
+    if (axis == 0) theta = 0.0;
+    else if (axis == 1) theta = (CV_PI/180.0)*90.0;
+    else theta = (CV_PI/180.0)*90.0*axis;
+    
+    for (int i=0; i<img.rows; i++) {
+        for (int j=0; j<img.cols; j++) {
+            double delta = i * sin(theta) - 
+                            j * cos(theta);
+            int ni = i + 2 * delta * (-sin(theta));
+            int nj = j + 2 * delta * cos(theta);
+
+            if (ni >= 0 && nj >= 0 && ni < img.rows && nj < img.cols) {
+                res.at<cv::Vec3b>(ni, nj)[0] = img.at<cv::Vec3b>(i, j)[0];
+                res.at<cv::Vec3b>(ni, nj)[1] = img.at<cv::Vec3b>(i, j)[1];
+                res.at<cv::Vec3b>(ni, nj)[2] = img.at<cv::Vec3b>(i, j)[2];
+            }
+        }
+    }
+    return res;
 }
