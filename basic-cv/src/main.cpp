@@ -34,23 +34,23 @@ int main(int argc, char** argv) {
     // fprintf(outfile, "  ->  IMG-DIM: {%d, %d}\n", img.rows, img.cols);
 
     //* QUANTIZE
-    clock_t start = clock();
-    int level = 3;
-    cv::Mat_<cv::Vec3b> qimg = quantize(img, level);
-    clock_t end = clock();
-    float time_spent = (end - start) / CLOCKS_PER_SEC;
+    // clock_t start = clock();
+    // int level = 3;
+    // cv::Mat_<cv::Vec3b> qimg = quantize(img, level);
+    // clock_t end = clock();
+    // float time_spent = (end - start) / CLOCKS_PER_SEC;
 
-    if (qimg.empty()) {
-        std::cout << "Could not open or find the image" << std::endl;
-        std::cin.get(); //wait for any key press
-        return -1;
-    }
+    // if (qimg.empty()) {
+    //     std::cout << "Could not open or find the image" << std::endl;
+    //     std::cin.get(); //wait for any key press
+    //     return -1;
+    // }
 
     // fprintf(outfile, "  ->  CPP - Time Taken to Quantize Image to level %d: %.6fs\n",
     //          level, time_spent);
 
     //* APPLY SKETCH FILTER
-    cv::Mat_<cv::Vec3b> skImg = sketchFilter(img);
+    // cv::Mat_<cv::Vec3b> skImg = sketchFilter(img);
 
     //* TRANSFORMS
     //-- HELPERS --//
@@ -81,30 +81,38 @@ int main(int argc, char** argv) {
     std::vector<double> params = {5.0, 5.0, 30.0, 1.0, 1.0, 1.0};
     std::string op = "trs";
     cv::Mat T = getTransformMatrix(params, op);
+    cv::Mat T2 = getTransformMatrix2(params, op);
     print2DMat(T, outfile, "Transformation Matrix:\n\t");
+    print2DMat(T2, outfile, "Transformation Matrix:\n\t");
 
     cv::Mat res = affineTransform(img, T);
+    cv::Mat res1 = affineTransform(img, T2);
     cv::Mat res2 = rotate(img, 30, true);
     cv::Mat sres = shear(img, 30, 1, 2);
 
     //* OUTLINE
     cv::Mat bord = shiftDiff(img, 2, 2);
 
+    //* REFLECT
+    cv::Mat rres = reflect(img, 1);
+
     //* SHOW AND SAVE
     cv::String windowName1 = "Normal";
     cv::String windowName2 = "Quantized";
     cv::String windowName3 = "Sketch";
-    cv::namedWindow(windowName1);
-    cv::namedWindow(windowName2);
-    cv::namedWindow(windowName3);
+    // cv::namedWindow(windowName1);
+    // cv::namedWindow(windowName2);
+    // cv::namedWindow(windowName3);
 
     cv::imshow(windowName1, img);
-    cv::imshow(windowName2, qimg);
-    cv::imshow(windowName3, skImg);
-    cv::imshow("transform", res);
+    // cv::imshow(windowName2, qimg);
+    // cv::imshow(windowName3, skImg);
+    cv::imshow("transform1", res);
+    cv::imshow("transform2", res1);
     cv::imshow("rotated", res2);
     cv::imshow("sheared", sres);
     cv::imshow("outline", bord);
+    cv::imshow("reflected", rres);
     
     cv::waitKey(0);
     cv::destroyAllWindows();
@@ -113,10 +121,17 @@ int main(int argc, char** argv) {
     // cv::String skimg_path = OUT + "skImg-2-8.jpg";
     // cv::String bpath = OUT + "bord-1.jpg";
     // cv::String tpath = OUT + "transf-1.jpg";
+    cv::String shr = OUT + "shear-1.jpg";
+    cv::String rt = OUT + "rotate-1.jpg"; 
+    cv::String re = OUT + "reflect-1.jpg"; 
     // cv::imwrite(qimg_path, qimg);
     // cv::imwrite(skimg_path, skImg);
     // cv::imwrite(tpath, res);
     // cv::imwrite(bpath, bord);
+    // cv::imwrite(shr, sres);
+    // cv::imwrite(rt, res2);
+    // cv::imwrite(re, rres);
+
 
     // print2DMat(r, outfile, "\t");
     fclose(outfile);
