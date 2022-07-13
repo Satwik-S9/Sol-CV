@@ -5,7 +5,7 @@
   1. Setup a virtual environment using your tool of choiyolov5/ce `(venv, conda, pyenv)`.
   2. Use the Following command to install the neccesarry packages.
 
-    ```bash
+    ```
       pip -r requirements.txt
     ```
   
@@ -23,13 +23,12 @@
   1. Run `python collect.py` to capture images of different emotions.
      1. **Note:** This script will capture images of you every 5 seconds to and save it to `data/images` (Make the folder beforehand)
 
-
 ## Results
 
-![ValImage1](yolov5/runs/train/exp/val_batch1_labels.jpg)
-![ValImage2](yolov5/runs/train/exp/val_batch0_labels.jpg)
-![ValImage3](yolov5/runs/train/exp/val_batch2_labels.jpg)
+![ValImage1](https://imgur.com/undefined)
+![ValImage2](https://imgur.com/hqHUbqG)
+![ValImage3](https://imgur.com/fBbmY65)
 
-![Result1](yolov5/runs/train/exp/results.png)
-![Result2](yolov5/runs/train/exp2/labels_correlogram.jpg)
-![Result3](yolov5/runs/train/exp2/labels.jpg)
+![Result1](https://imgur.com/zntuUSY)
+![Result2](https://imgur.com/LZX0pfk)
+![Result3](https://imgur.com/WJSsHPV)
