@@ -11,9 +11,9 @@
 > `version` : 0.1.0
 
 ## 1. Description
-  This is a repo of all my favourite Computer Vision Projects. This Repo Currently Contains.
-    1. Emotion Detector
-    2. Basic-CV Algorithms written from Scratch in C++
+This is a repo of all my favourite Computer Vision Projects. This Repo Currently Contains.
+1. [Emotion Detector](https://github.com/Satwik-S9/Sol-CV/tree/main/object-detection/emotion-detector)
+2. [Basic-CV Algorithms written from Scratch in C++](https://github.com/Satwik-S9/Sol-CV/tree/main/basic-cv)
 
 ## 2. QuickStart
 
