@@ -11,10 +11,15 @@
 > `version` : 0.1.0
 
 ## 1. Description
+  This is a repo of all my favourite Computer Vision Projects. This Repo Currently Contains.
+    1. Emotion Detector
+    2. Basic-CV Algorithms written from Scratch in C++
 
 ## 2. QuickStart
 
 ### 2.1 Setting Up the Environment | Python
+
+#### For `basic-cv`
 
   - Using the provided `environment.yml` file and `conda`.
     - for a global environment.
@@ -30,6 +35,20 @@
 
   - Or Manually install packages listed in the file.
 
+**NOTE:** For The setup of environments of other projects see their repective READMEs.
+
 ### 2.2 Setting up Environment | C++
 
-  - Follow Instructions from [here](#) to install opencv on your respective system for C++.
+  - Follow Instructions from here [(Linux](https://docs.opencv.org/4.x/d7/d9f/tutorial_linux_install.html), [Windows)](https://docs.opencv.org/4.x/d3/d52/tutorial_windows_install.html) to install opencv on your respective system for C++.
+  - If you are using Visual Studio / VSCode Windows the setup is easy and the guides online are sufficient.
+  - For Linux, in `tasks.json` file add this in `args` section.
+
+    ```json
+        "args": [
+                "-g",
+                "${file}",
+                "-o",
+                "${fileDirname}/../build/${fileBasenameNoExtension}",
+                "-lm"
+             ],
+    ```
