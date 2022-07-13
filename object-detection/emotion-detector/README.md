@@ -4,11 +4,11 @@
 
   1. Setup a virtual environment using your tool of choiyolov5/ce `(venv, conda, pyenv)`.
   2. Use the Following command to install the neccesarry packages.
-
-    ```
-      pip -r requirements.txt
-    ```
   
+  ```bash
+      pip -r requirements.txt
+  ```
+
   3. Install Pytorch from the official website `https://pytorch.org/`.
 
 ## QuickStart
@@ -25,10 +25,10 @@
 
 ## Results
 
-![ValImage1](https://imgur.com/fBbmY65)
-![ValImage2](https://imgur.com/hqHUbqG)
-![ValImage3](https://imgur.com/jgF1MK5)
+![ValImage1](results/val_batch0_labels.jpg)
+![ValImage2](results/val_batch1_labels.jpg)
+![ValImage3](results/val_batch2_labels.jpg)
 
-![Result1](https://imgur.com/NYsAtUu)
-![Result2](https://imgur.com/zntuUSY)
-![Result3](https://imgur.com/LZX0pfk)
+![Result1](results/confusion_matrix.png)
+![Result2](results/labels_correlogram.jpg)
+![Result3](results/labels.jpg)
