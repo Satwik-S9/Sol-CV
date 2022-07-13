@@ -1,0 +1,6 @@
+*.pt
+.ipynb_checkpoints/
+__pycache__/
+yolov5/
+data/
+*.cache
