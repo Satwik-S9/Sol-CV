@@ -25,10 +25,10 @@
 
 ## Results
 
-![ValImage1](https://imgur.com/undefined)
+![ValImage1](https://imgur.com/fBbmY65)
 ![ValImage2](https://imgur.com/hqHUbqG)
-![ValImage3](https://imgur.com/fBbmY65)
+![ValImage3](https://imgur.com/jgF1MK5)
 
-![Result1](https://imgur.com/zntuUSY)
-![Result2](https://imgur.com/LZX0pfk)
-![Result3](https://imgur.com/WJSsHPV)
+![Result1](https://imgur.com/NYsAtUu)
+![Result2](https://imgur.com/zntuUSY)
+![Result3](https://imgur.com/LZX0pfk)
