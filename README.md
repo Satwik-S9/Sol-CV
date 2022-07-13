@@ -41,14 +41,4 @@
 
   - Follow Instructions from here [(Linux](https://docs.opencv.org/4.x/d7/d9f/tutorial_linux_install.html), [Windows)](https://docs.opencv.org/4.x/d3/d52/tutorial_windows_install.html) to install opencv on your respective system for C++.
   - If you are using Visual Studio / VSCode Windows the setup is easy and the guides online are sufficient.
-  - For Linux, in `tasks.json` file add this in `args` section.
-
-    ```json
-        "args": [
-                "-g",
-                "${file}",
-                "-o",
-                "${fileDirname}/../build/${fileBasenameNoExtension}",
-                "-lm"
-             ],
-    ```
+  - For Linux, copy the `Makefile` to setup compilation. 
